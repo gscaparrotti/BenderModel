@@ -39,7 +39,7 @@ public class OrderedDish extends Dish {
      * 
      * @param dish an existing dish which will be used to get a moment
      * @param name 
-     * @param price
+     * @param price 
      */
     public OrderedDish(final String name, final double price, final OrderedDish dish) {
         super(name, price);

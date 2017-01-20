@@ -21,7 +21,6 @@ sourceSets {
 
 dependencies {
 	compile "com.google.guava:guava:$guavaVersion"
-	compile "org.danilopianini:javalib-java7:$javalib7Version"
 
     pmd(
         "net.sourceforge.pmd:pmd-core:$pmdVersion",

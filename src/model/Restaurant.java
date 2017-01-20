@@ -83,13 +83,17 @@ public class Restaurant implements IRestaurant {
         } else {
             tables.get(table).get(item).setX(tables.get(table).get(item).getX() - quantity);
             if (tables.get(table).get(item).getY() > tables.get(table).get(item).getX()) {
+                mapLock.release();
                 setOrderAsProcessed(table, item);
+                mapLock.read();
             }
         }
         if (tables.get(table).isEmpty()) {
+            mapLock.release();
             resetTable(table);
+        } else {
+            mapLock.release();
         }
-        mapLock.release();
     }
 
     @Override

@@ -18,10 +18,10 @@ public class Restaurant implements IRestaurant {
     private final Map<Integer, Map<IDish, Pair<Integer, Integer>>> tables = new HashMap<Integer, Map<IDish, Pair<Integer, Integer>>>();
     private transient FastReadWriteLock tablesAmountLock = new FastReadWriteLock();
     private transient FastReadWriteLock mapLock = new FastReadWriteLock();
-    private int tablesAmount = 0;
+    private int tablesAmount;
     private static final String ERROR_MESSAGE = "Dati inseriti non corretti. Controllare.";
     
-    private void readObject(java.io.ObjectInputStream in) throws IOException, ClassNotFoundException {
+    private void readObject(java.io.ObjectInputStream in) throws IOException, ClassNotFoundException { //NOPMD
         in.defaultReadObject();
         tablesAmountLock = new FastReadWriteLock();
         mapLock = new FastReadWriteLock();

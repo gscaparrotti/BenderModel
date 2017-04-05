@@ -18,8 +18,8 @@ public class OrderedDish extends Dish {
      * @param newName the name of the dish
      * @param newPrice the price of the dish
      */
-    public OrderedDish(final String newName, final double newPrice) {
-        super(newName, newPrice);
+    public OrderedDish(final String newName, final double newPrice, final int filter) {
+        super(newName, newPrice, filter);
         time = new Date();
     }
 
@@ -30,7 +30,7 @@ public class OrderedDish extends Dish {
      * @param dish an existing dish which will be used to get a name and a price
      */
     public OrderedDish(final IDish dish) {
-        super(dish.getName(), dish.getPrice());
+        super(dish.getName(), dish.getPrice(), dish.getFilterValue());
         time = new Date();
     }
 
@@ -41,8 +41,8 @@ public class OrderedDish extends Dish {
      * @param name 
      * @param price 
      */
-    public OrderedDish(final String name, final double price, final OrderedDish dish) {
-        super(name, price);
+    public OrderedDish(final String name, final double price, final int filter, final OrderedDish dish) {
+        super(name, price, filter);
         time = dish.getTime();
     }
 

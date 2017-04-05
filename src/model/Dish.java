@@ -14,9 +14,10 @@ public class Dish implements IDish {
     /**
      * The number of fields that defines a dish.
      */
-    public static final int FIELDS = 2;
+    public static final int FIELDS = 3;
     private final String name;
     private final double price;
+    private final int filter;
 
     /**
      * @param newName
@@ -26,10 +27,11 @@ public class Dish implements IDish {
      * 
      *            Creates a new dish with the given name and price.
      */
-    public Dish(final String newName, final double newPrice) {
+    public Dish(final String newName, final double newPrice, final int filter) {
         Preconditions.checkNotNull(newName);
         this.name = newName;
         this.price = newPrice;
+        this.filter = filter;
     }
 
     @Override
@@ -40,6 +42,11 @@ public class Dish implements IDish {
     @Override
     public double getPrice() {
         return this.price;
+    }
+    
+    @Override
+    public int getFilterValue() {
+        return filter;
     }
 
     @Override

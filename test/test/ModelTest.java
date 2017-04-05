@@ -22,12 +22,12 @@ public class ModelTest {
             assertSame(r.addTable(), i+1);
         }
         try {
-            r.addOrder(0, new Dish("piatto1", 1), 1);
+            r.addOrder(0, new Dish("piatto1", 1, 0), 1);
             fail();
         } catch (final IllegalArgumentException e) { } //NOPMD
-        r.addOrder(1, new Dish("piatto1", 1), 1);
+        r.addOrder(1, new Dish("piatto1", 1, 0), 1);
         assertEquals(1, r.getOrders(1).size());
-        assertEquals(new Dish("piatto1", 1), r.getOrders(1).keySet().toArray()[0]);
+        assertEquals(new Dish("piatto1", 1, 0), r.getOrders(1).keySet().toArray()[0]);
     }
     
     @Test
@@ -59,7 +59,7 @@ public class ModelTest {
             s.add(new Callable<Void>() {           
                 @Override
                 public Void call() {
-                    r.addOrder(t, new Dish("piatto" + t, 1), 1);      
+                    r.addOrder(t, new Dish("piatto" + t, 1, 0), 1);      
                     return null;
                 }
             });
@@ -70,7 +70,7 @@ public class ModelTest {
                 assertTrue(f.isDone());
             }
             for (int i = 0; i < 30; i++) {
-                assertTrue(r.getOrders(i+1).containsKey(new Dish("piatto" + (i+1), 1)));
+                assertTrue(r.getOrders(i+1).containsKey(new Dish("piatto" + (i+1), 1, 0)));
             }
         } catch (final InterruptedException e1) {
             fail();

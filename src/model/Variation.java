@@ -48,4 +48,8 @@ public class Variation implements IDish {
         return decoratedDish.getPrice() + this.cost;
     }
 
+    @Override
+    public int getFilterValue() {
+        return decoratedDish.getFilterValue();
+    }
 }

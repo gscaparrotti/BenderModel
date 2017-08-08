@@ -18,5 +18,10 @@ public interface IDish extends Serializable {
      * @return The price of this dish.
      */
     double getPrice();
+    
+    /**
+     * @return the value of the filter for this dish
+     */
+    int getFilterValue();
 
 }

@@ -5,6 +5,7 @@ apply plugin: 'pmd'
 apply plugin: 'findbugs'
 
 sourceCompatibility = "$jdkVersion"
+targetCompatibility = "$jdkVersion"
 
 repositories {
 	mavenCentral()

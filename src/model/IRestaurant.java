@@ -81,4 +81,15 @@ public interface IRestaurant extends Serializable {
      * @return the number of present tables
      */
     int getTablesAmount();
+    
+    /**
+     * @param tableNumber the number of the table
+     * @param name the name you want to give to the selected table
+     */
+    void setTableName(int tableNumber, String name);
+    
+    /**
+     * @param tableNumber the number of the table whose name you want to know
+     */
+    String getTableName(int tableNumber);
 }

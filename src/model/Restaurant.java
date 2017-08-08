@@ -16,6 +16,7 @@ public class Restaurant implements IRestaurant {
      */
     private static final long serialVersionUID = 6813103235280390095L;
     private final Map<Integer, Map<IDish, Pair<Integer, Integer>>> tables = new HashMap<Integer, Map<IDish, Pair<Integer, Integer>>>();
+    private final Map<Integer, String> names = new HashMap<Integer, String>();
     private transient FastReadWriteLock tablesAmountLock = new FastReadWriteLock();
     private int tablesAmount;
     private static final String ERROR_MESSAGE = "Dati inseriti non corretti. Controllare.";
@@ -37,6 +38,7 @@ public class Restaurant implements IRestaurant {
     public synchronized int removeTable() {
         tablesAmountLock.write();
         if (tablesAmount > 0 && !tables.containsKey(tablesAmount)) {
+            setTableName(tablesAmount, null);
             tablesAmount--;
             tablesAmountLock.release();
             return tablesAmount;
@@ -101,6 +103,7 @@ public class Restaurant implements IRestaurant {
             throw new IllegalArgumentException(ERROR_MESSAGE);
         }
         tables.remove(table);
+        names.remove(table);
     }
 
     /*
@@ -140,6 +143,22 @@ public class Restaurant implements IRestaurant {
             return false;
         }
         return true;
+    }
+
+    @Override
+    public synchronized void setTableName(final int tableNumber, final String name) {
+        if (tableNumber > 0 && tableNumber <= getTablesAmount()) {
+            if (name == null) {
+                names.remove(tableNumber);
+            } else {
+                names.put(tableNumber, name);
+            }
+        }
+    }
+
+    @Override
+    public synchronized String getTableName(final int tableNumber) {
+        return names.get(tableNumber);
     }
 
 }

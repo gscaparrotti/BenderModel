@@ -158,7 +158,7 @@ public class Restaurant implements IRestaurant {
 
     @Override
     public synchronized String getTableName(final int tableNumber) {
-        return names.get(tableNumber);
+        return names.containsKey(tableNumber) ? names.get(tableNumber) : "";
     }
 
 }

@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 import com.google.common.base.Preconditions;
+import com.google.common.collect.ImmutableMap;
 import concurrency.FastReadWriteLock;
 
 /**
@@ -159,6 +160,11 @@ public class Restaurant implements IRestaurant {
     @Override
     public synchronized String getTableName(final int tableNumber) {
         return names.containsKey(tableNumber) ? names.get(tableNumber) : "";
+    }
+
+    @Override
+    public Map<Integer, String> getAllNames() {
+        return names != null ? ImmutableMap.copyOf(names) : new HashMap<Integer, String>();
     }
 
 }

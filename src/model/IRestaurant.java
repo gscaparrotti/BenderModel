@@ -92,4 +92,6 @@ public interface IRestaurant extends Serializable {
      * @param tableNumber the number of the table whose name you want to know
      */
     String getTableName(int tableNumber);
+    
+    Map<Integer, String> getAllNames();
 }

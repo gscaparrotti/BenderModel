@@ -18,33 +18,22 @@ public class Restaurant implements IRestaurant {
     private static final long serialVersionUID = 6813103235280390095L;
     private final Map<Integer, Map<IDish, Pair<Integer, Integer>>> tables = new HashMap<Integer, Map<IDish, Pair<Integer, Integer>>>();
     private final Map<Integer, String> names = new HashMap<Integer, String>();
-    private transient FastReadWriteLock tablesAmountLock = new FastReadWriteLock();
     private int tablesAmount;
     private static final String ERROR_MESSAGE = "Dati inseriti non corretti. Controllare.";
-    
-    private void readObject(java.io.ObjectInputStream in) throws IOException, ClassNotFoundException { //NOPMD
-        in.defaultReadObject();
-        tablesAmountLock = new FastReadWriteLock();
-    }
 
     @Override
-    public int addTable() {
-        tablesAmountLock.write();
+    public synchronized int addTable() {
         this.tablesAmount++;
-        tablesAmountLock.release();
         return this.tablesAmount;
     }
 
     @Override
     public synchronized int removeTable() {
-        tablesAmountLock.write();
         if (tablesAmount > 0 && !tables.containsKey(tablesAmount)) {
             setTableName(tablesAmount, null);
             tablesAmount--;
-            tablesAmountLock.release();
             return tablesAmount;
         } else {
-            tablesAmountLock.release();
             throw new IllegalStateException("Il tavolo ha ancora piatti da servire");
         }
     }
@@ -116,12 +105,8 @@ public class Restaurant implements IRestaurant {
      */
 
     @Override
-    public int getTablesAmount() {
-        int temp;
-        tablesAmountLock.read();
-        temp = this.tablesAmount;
-        tablesAmountLock.release();
-        return temp;
+    public synchronized int getTablesAmount() {
+        return this.tablesAmount;
     }
 
     @Override
@@ -133,13 +118,10 @@ public class Restaurant implements IRestaurant {
         }
     }
 
-    private boolean checkIfCorrect(final int table, final IDish item, final int quantity) {
-        tablesAmountLock.read();
+    private synchronized boolean checkIfCorrect(final int table, final IDish item, final int quantity) {
         if (table <= 0 || table > tablesAmount || item == null || quantity <= 0) {
-            tablesAmountLock.release();
             return false;
         }
-        tablesAmountLock.release();
         if (item.getName().length() <= 0 || item.getPrice() <= 0) { // NOPMD
             return false;
         }

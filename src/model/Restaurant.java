@@ -6,6 +6,36 @@ import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableMap;
 
 /**
+ * A concrete implementation of {@link IRestaurant}. This implementation is
+ * thread-safe, so all its method can be called concurrently by many threads.
+ * Please note that, while adding an element (a table, a order, etc...) will
+ * work as expected, the methods which retrieve elements, such as
+ * {@link #getOrders(int table)}, although thread-safe, return objects which
+ * <b>are not</b>. Referring to getOrders, if you want to iterate over its
+ * collections views (or generically get an entry) you should synchronize over
+ * the entire Resturant object:
+ * 
+ * <pre>
+* {@code
+* IRestaurant r = new Restaurant();
+* ...
+* synchronized(r) {
+*       Iterator i = r.getOrders(tableNumber).entrySet().iterator();
+*       while(i.hasNext()) {
+*               //do something with the entry returned by i.next()
+*       }
+* }
+* }
+ * </pre>
+ * 
+ * If you don't do so, the iterator might throw a
+ * {@link java.util.ConcurrentModificationException}. The exception is thrown
+ * following a fail-fast logic, so the iterator should fail as soon as a
+ * concurrent modification is detected, but this is done also following a best
+ * effort logic, so there is no guarantee that this will actually happen. That
+ * means that you should not rely on it, but it should only a way to prevent
+ * damages to the data stored in a Resturant object as a consequence of, for
+ * instance, a bug or a programming error.
  *
  */
 public class Restaurant implements IRestaurant {

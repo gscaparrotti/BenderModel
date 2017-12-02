@@ -12,11 +12,16 @@ public class OrderedDish extends Dish {
     private final Date time;
 
     /**
-     * Creates a new OrderedDish given a name and a price and 
-     * keeping a reference about the moment when the object was instantiated.
+     * Creates a new OrderedDish given a name and a price and keeping a
+     * reference about the moment when the object was instantiated.
      * 
-     * @param newName the name of the dish
-     * @param newPrice the price of the dish
+     * @param newName
+     *            the name of the dish
+     * @param newPrice
+     *            the price of the dish
+     * @param filter
+     *            Must be zero if this dish represents a beverage or a positive
+     *            integer otherwise
      */
     public OrderedDish(final String newName, final double newPrice, final int filter) {
         super(newName, newPrice, filter);
@@ -24,10 +29,11 @@ public class OrderedDish extends Dish {
     }
 
     /**
-     * Creates a new OrderedDish given a name and a price and 
-     * keeping a reference about the moment when the object was instantiated.
+     * Creates a new OrderedDish given a name and a price and keeping a
+     * reference about the moment when the object was instantiated.
      * 
-     * @param dish an existing dish which will be used to get a name and a price
+     * @param dish
+     *            an existing dish which will be used to get a name and a price
      */
     public OrderedDish(final IDish dish) {
         super(dish.getName(), dish.getPrice(), dish.getFilterValue());
@@ -35,11 +41,19 @@ public class OrderedDish extends Dish {
     }
 
     /**
-     * Creates a new OrderedDish setting its creation time to a moment provided by another OrderedDish.
+     * Creates a new OrderedDish setting its creation time to a moment provided
+     * by another OrderedDish.
      * 
-     * @param dish an existing dish which will be used to get a moment
-     * @param name 
-     * @param price 
+     * @param dish
+     *            an existing dish which will be used to get the moment it was
+     *            created at. Its name and its price will be ignored.
+     * @param name
+     *            the name of the new dish
+     * @param price
+     *            the price of the new dish
+     * @param filter
+     *            Must be zero if this dish represents a beverage or a positive
+     *            integer otherwise
      */
     public OrderedDish(final String name, final double price, final int filter, final OrderedDish dish) {
         super(name, price, filter);

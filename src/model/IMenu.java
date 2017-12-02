@@ -10,10 +10,11 @@ import java.io.Serializable;
 public interface IMenu extends Serializable {
 
     /**
+     * Adds all the given {@link IDish} to this menu.
+     * 
      * @param items
      *            A variable number of {@link IDish} to add
      * 
-     *            Adds all the given {@link IDish} to this menu.
      */
     void addItems(IDish... items);
 

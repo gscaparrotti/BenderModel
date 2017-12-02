@@ -16,9 +16,18 @@ public class Order implements Serializable {
     private final Pair<Integer, Integer> amounts;
 
     /**
-     * @param table the table who made this order
-     * @param dish the desired dish
-     * @param amounts the quantity of the desired dish and the already served quantity
+     * Creates a new Order. An Order is identified by the table which requested
+     * a certain dish, an ordered dish and a couple of integer values,
+     * representing how many dishes have been ordered and how many dishes have
+     * been already served.
+     * 
+     * @param table
+     *            the table who made this order
+     * @param dish
+     *            the desired dish
+     * @param amounts
+     *            the quantity of the desired dish and the already served
+     *            quantity
      */
     public Order(final int table, final IDish dish, final Pair<Integer, Integer> amounts) {
         this.table = table;

@@ -3,15 +3,14 @@ package model;
 import java.io.Serializable;
 
 /**
+ * A standard generic Pair&lt;X,Y&gt;, with getters, hashCode, equals, and toString
+ * well implemented. X and Y are modifiable after creating the object.
  *
  * @param <X>
  *            the first element's type
  * @param <Y>
  *            the second element's type
  * 
- *            A standard generic Pair<X,Y>, with getters, hashCode, equals, and
- *            toString well implemented. X and Y are modifiable after creating
- *            the object.
  */
 public class Pair<X, Y> implements Serializable {
 

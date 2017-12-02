@@ -20,12 +20,15 @@ public class Dish implements IDish {
     private final int filter;
 
     /**
+     * Creates a new dish with the given name and price.
+     * 
      * @param newName
      *            The name of this dish
      * @param newPrice
      *            The price of this dish
-     * 
-     *            Creates a new dish with the given name and price.
+     * @param filter
+     *            Must be zero if this dish represents a beverage or a positive
+     *            integer otherwise
      */
     public Dish(final String newName, final double newPrice, final int filter) {
         Preconditions.checkNotNull(newName);

@@ -10,7 +10,33 @@ public class OrderedDish extends Dish {
 
     private static final long serialVersionUID = 1637868088291903941L;
     private final Date time;
-
+    
+    /**
+     * Creates a new OrderedDish given a name and a price and keeping a
+     * reference about the moment when the object was instantiated.
+     * 
+     * @param newName
+     *            the name of the dish
+     * @param newPrice
+     *            the price of the dish
+     * @param moment
+     *            If NOW then this OrderedDish will effectively keep a reference to the 
+     *            moment it was istantiated, otherwise it will keep a reference to
+     *            to a default moment.
+     * @param filter
+     *            Must be zero if this dish represents a beverage or a positive
+     *            integer otherwise
+     */
+    
+    public OrderedDish(final String newName, final double newPrice, final Moments moment, final int filter) {
+        super(newName, newPrice, filter);
+        if (moment == Moments.NOW) {
+            time = new Date();
+        } else {
+            time = new Date(0);
+        }
+    }
+    
     /**
      * Creates a new OrderedDish given a name and a price and keeping a
      * reference about the moment when the object was instantiated.
@@ -24,8 +50,27 @@ public class OrderedDish extends Dish {
      *            integer otherwise
      */
     public OrderedDish(final String newName, final double newPrice, final int filter) {
-        super(newName, newPrice, filter);
-        time = new Date();
+        this(newName, newPrice, Moments.NOW, filter);
+    }
+    
+    /**
+     * Creates a new OrderedDish given a name and a price and keeping a
+     * reference about the moment when the object was instantiated.
+     * 
+     * @param dish
+     *            an existing dish which will be used to get a name and a price
+     * @param moment
+     *            If NOW then this OrderedDish will effectively keep a reference to the 
+     *            moment it was istantiated, otherwise it will keep a reference to
+     *            to a default moment.
+     */
+    public OrderedDish(final IDish dish, final Moments moment) {
+        super(dish.getName(), dish.getPrice(), dish.getFilterValue());
+        if (moment == Moments.NOW) {
+            time = new Date();
+        } else {
+            time = new Date(0);
+        }
     }
 
     /**
@@ -36,8 +81,7 @@ public class OrderedDish extends Dish {
      *            an existing dish which will be used to get a name and a price
      */
     public OrderedDish(final IDish dish) {
-        super(dish.getName(), dish.getPrice(), dish.getFilterValue());
-        time = new Date();
+        this(dish.getName(), dish.getPrice(), Moments.NOW, dish.getFilterValue());
     }
 
     /**
@@ -65,5 +109,9 @@ public class OrderedDish extends Dish {
      */
     public Date getTime() {
         return new Date(time.getTime());
+    }
+    
+    public enum Moments {
+        NOW, ZERO;
     }
 }

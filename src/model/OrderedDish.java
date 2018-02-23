@@ -2,10 +2,31 @@ package model;
 
 import java.util.Date;
 
+/* 
+ * Nota: anche se estendere Dish non e' l'opzione migliore
+ * per avere degli oggetti che mantengano le informazioni sul momento
+ * in cui sono stati creati (un'opzione migliore potrebbe essere creare
+ * una classe Ordine, piu' basilare di quella gia' esistente, che contenga
+ * come campi un normale Dish e un Date), bisogna considerare che l'implementazione
+ * di Bender fa affidamento piu' volte sull'esistenza di questa classe, come conseguenza
+ * del fatto che e' ovviamente nata prima questa classe rispetto al codice che ne fa uso,
+ * percio', anche se chiaramente sarebbe possibile modificare tutto per rendere il codice
+ * piu' "corretto", questo comporterebbe cambiamenti importanti, 
+ * come del resto qualsiasi modifica alle interfacce (getOrders non dovrebbe
+ * piu' ritornare dei semplici Dish ma degli oggetti della nuova classe che andrebbe 
+ * creata) che al momento potrebbe non valere la pena sostenere. 
+ */
+
 /**
- * A IDish which keeps infos about the moment when the instance was created.
+ * A IDish which has been ordered by a customer. 
+ * Generically speaking, an ordered dish is a dish which 
+ * also keeps information about the fact that it has been 
+ * ordered by a certain customer. 
+ * In this specific case, an OrderedDish keeps informations about 
+ * the moment it has been ordered at.
  *
  */
+
 public class OrderedDish extends Dish {
 
     private static final long serialVersionUID = 1637868088291903941L;

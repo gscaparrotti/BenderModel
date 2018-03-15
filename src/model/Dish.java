@@ -51,6 +51,11 @@ public class Dish implements IDish {
     public int getFilterValue() {
         return filter;
     }
+    
+    @Override
+    public Dish clone() {
+        return new Dish(name, price, filter);
+    }
 
     @Override
     public int hashCode() {

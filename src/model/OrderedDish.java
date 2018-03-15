@@ -122,7 +122,7 @@ public class OrderedDish extends Dish {
      */
     public OrderedDish(final String name, final double price, final int filter, final OrderedDish dish) {
         super(name, price, filter);
-        time = dish.getTime();
+        time = new Date(dish.getTime().getTime());
     }
 
     /**
@@ -130,6 +130,11 @@ public class OrderedDish extends Dish {
      */
     public Date getTime() {
         return new Date(time.getTime());
+    }
+    
+    @Override
+    public Dish clone() {
+        return new OrderedDish(this.getName(), this.getPrice(), this.getFilterValue(), this);
     }
     
     public enum Moments {

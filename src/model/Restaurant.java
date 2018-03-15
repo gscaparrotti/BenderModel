@@ -2,6 +2,8 @@ package model;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Map.Entry;
+
 import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableMap;
 
@@ -138,9 +140,15 @@ public class Restaurant implements IRestaurant {
     }
 
     @Override
-    public synchronized  Map<IDish, Pair<Integer, Integer>> getOrders(final int table) {
-        if (table > 0 && tables.containsKey(table)) {
-            return tables.get(table);
+    public synchronized  Map<IDish, Pair<Integer, Integer>> getOrders(final int tableNumber) {
+        if (tableNumber > 0 && tables.containsKey(tableNumber)) {
+            final Map<IDish, Pair<Integer, Integer>> result = new HashMap<IDish, Pair<Integer,Integer>>();
+            for (final Entry<IDish, Pair<Integer, Integer>> table : tables.get(tableNumber).entrySet()) {
+                final IDish newDish = table.getKey().clone();
+                final Pair<Integer, Integer> newPair = new Pair<Integer, Integer>(table.getValue().getX(), table.getValue().getY());
+                result.put(newDish, newPair);
+            }
+            return result;
         } else {
             return new HashMap<IDish, Pair<Integer, Integer>>();
         }
@@ -173,7 +181,7 @@ public class Restaurant implements IRestaurant {
     }
 
     @Override
-    public Map<Integer, String> getAllNames() {
+    public synchronized Map<Integer, String> getAllNames() {
         return names != null ? ImmutableMap.copyOf(names) : new HashMap<Integer, String>();
     }
 

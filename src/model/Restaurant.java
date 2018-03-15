@@ -173,7 +173,7 @@ public class Restaurant implements IRestaurant {
     }
 
     @Override
-    public Map<Integer, String> getAllNames() {
+    public synchronized Map<Integer, String> getAllNames() {
         return names != null ? ImmutableMap.copyOf(names) : new HashMap<Integer, String>();
     }
 

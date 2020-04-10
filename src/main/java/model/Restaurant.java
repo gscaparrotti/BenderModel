@@ -1,9 +1,10 @@
 package model;
 
-import java.util.HashMap;
-import java.util.Map;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableMap;
+
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * A concrete implementation of {@link IRestaurant}. This implementation is
@@ -43,9 +44,9 @@ public class Restaurant implements IRestaurant {
     /**
      * 
      */
-    private static final long serialVersionUID = 6813103235280390095L;
-    private final Map<Integer, Map<IDish, Pair<Integer, Integer>>> tables = new HashMap<Integer, Map<IDish, Pair<Integer, Integer>>>();
-    private final Map<Integer, String> names = new HashMap<Integer, String>();
+    private static final long serialVersionUID = -1893050222250754776L;
+    private final Map<String, Map<IDish, Pair<Integer, Integer>>> tables = new HashMap<>();
+    private final Map<Integer, String> names = new HashMap<>();
     private int tablesAmount;
 
     @Override
@@ -76,35 +77,35 @@ public class Restaurant implements IRestaurant {
             return;
         }
         final Map<IDish, Pair<Integer, Integer>> temp;
-        if (tables.containsKey(table)) {
-            temp = tables.get(table);
+        if (tables.containsKey(table + names.getOrDefault(table, ""))) {
+            temp = tables.get(table + names.getOrDefault(table, ""));
         } else {
-            temp = new HashMap<IDish, Pair<Integer, Integer>>();
+            temp = new HashMap<>();
         }
         if (temp.containsKey(item)) {
             temp.get(item).setX(temp.get(item).getX() + quantity);
         } else {
-            temp.put(item, new Pair<Integer, Integer>(quantity, 0));
+            temp.put(item, new Pair<>(quantity, 0));
         }
-        tables.put(table, temp);
+        tables.put(table + names.getOrDefault(table, ""), temp);
     }
 
     @Override
     public synchronized void removeOrder(final int table, final IDish item, final int quantity) {
         Preconditions.checkNotNull(item);
-        if (!checkIfCorrect(table, item, quantity) || !tables.containsKey(table) || !tables.get(table).containsKey(item)
-                || tables.get(table).get(item).getX() - quantity < 0) {
+        if (!checkIfCorrect(table, item, quantity) || !tables.containsKey(table + names.getOrDefault(table, "")) || !tables.get(table + names.getOrDefault(table, "")).containsKey(item)
+                || tables.get(table + names.getOrDefault(table, "")).get(item).getX() - quantity < 0) {
             return;
         }
-        if (tables.get(table).get(item).getX() - quantity == 0) {
-            tables.get(table).remove(item);
+        if (tables.get(table + names.getOrDefault(table, "")).get(item).getX() - quantity == 0) {
+            tables.get(table + names.getOrDefault(table, "")).remove(item);
         } else {
-            tables.get(table).get(item).setX(tables.get(table).get(item).getX() - quantity);
-            if (tables.get(table).get(item).getY() > tables.get(table).get(item).getX()) {
+            tables.get(table + names.getOrDefault(table, "")).get(item).setX(tables.get(table + names.getOrDefault(table, "")).get(item).getX() - quantity);
+            if (tables.get(table + names.getOrDefault(table, "")).get(item).getY() > tables.get(table + names.getOrDefault(table, "")).get(item).getX()) {
                 setOrderAsProcessed(table, item);
             }
         }
-        if (tables.get(table).isEmpty()) {
+        if (tables.get(table + names.getOrDefault(table, "")).isEmpty()) {
             resetTable(table);
         }
     }
@@ -112,10 +113,10 @@ public class Restaurant implements IRestaurant {
     @Override
     public synchronized void setOrderAsProcessed(final int table, final IDish item) {
         Preconditions.checkNotNull(item);
-        if (!checkIfCorrect(table, item, 1) || !tables.containsKey(table) || tables.get(table).get(item) == null) {
+        if (!checkIfCorrect(table, item, 1) || !tables.containsKey(table + names.getOrDefault(table, "")) || tables.get(table + names.getOrDefault(table, "")).get(item) == null) {
             return;
         }
-        tables.get(table).get(item).setY(tables.get(table).get(item).getX());
+        tables.get(table + names.getOrDefault(table, "")).get(item).setY(tables.get(table + names.getOrDefault(table, "")).get(item).getX());
     }
 
     @Override
@@ -123,23 +124,44 @@ public class Restaurant implements IRestaurant {
         if (table <= 0) {
             return;
         }
-        tables.remove(table);
+        tables.remove(table + names.getOrDefault(table, ""));
         names.remove(table);
     }
 
     @Override
     public synchronized  Map<IDish, Pair<Integer, Integer>> getOrders(final int table) {
-        if (table > 0 && tables.containsKey(table)) {
-            return tables.get(table);
+        if (table > 0) {
+            if (names.containsKey(table)) {
+                if (tables.containsKey(table + names.getOrDefault(table, ""))) {
+                    return tables.get(table + names.getOrDefault(table, ""));
+                } else {
+                    return new HashMap<>();
+                }
+            } else {
+                final Map<IDish, Pair<Integer, Integer>> result = new HashMap<>();
+                tables.entrySet()
+                        .stream()
+                        .filter(entry -> entry.getKey().startsWith(Integer.toString(table)))
+                        .map(Map.Entry::getValue)
+                        .forEach(map -> map.forEach((key, value) -> {
+                            if (result.containsKey(key)) {
+                                result.get(key).setX(result.get(key).getX() + value.getX());
+                                result.get(key).setY(result.get(key).getY() + value.getY());
+                            } else {
+                                result.put(key, new Pair<>(value.getX(), value.getY()));
+                            }
+                        }));
+                return result;
+            }
         } else {
-            return new HashMap<IDish, Pair<Integer, Integer>>();
+            return new HashMap<>();
         }
     }
 
     @Override
     public synchronized void setTableName(final int tableNumber, final String name) {
         if (tableNumber > 0 && tableNumber <= getTablesAmount()) {
-            if (name == null) {
+            if (name == null || name.length() == 0) {
                 names.remove(tableNumber);
             } else {
                 names.put(tableNumber, name);
@@ -149,12 +171,12 @@ public class Restaurant implements IRestaurant {
 
     @Override
     public synchronized String getTableName(final int tableNumber) {
-        return names.containsKey(tableNumber) ? names.get(tableNumber) : "";
+        return names.getOrDefault(tableNumber, "");
     }
 
     @Override
     public synchronized Map<Integer, String> getAllNames() {
-        return names != null ? ImmutableMap.copyOf(names) : new HashMap<Integer, String>();
+        return ImmutableMap.copyOf(names);
     }
     
     private synchronized boolean checkIfCorrect(final int table, final IDish item, final int quantity) {

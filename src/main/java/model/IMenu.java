@@ -3,7 +3,7 @@ package model;
 import java.io.Serializable;
 
 /**
- * 
+ *
  * An interface with the necessary methods to model a restaurant menu.
  *
  */
@@ -11,7 +11,7 @@ public interface IMenu extends Serializable {
 
     /**
      * Adds all the given {@link IDish} to this menu.
-     * 
+     *
      * @param items
      *            A variable number of {@link IDish} to add
      * 

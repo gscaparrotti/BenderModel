@@ -1,4 +1,4 @@
-package model;
+package com.github.gscaparrotti.bendermodel.model;
 
 import java.util.Arrays;
 import java.util.Comparator;

@@ -126,6 +126,25 @@ public class OrderedDish extends Dish {
     }
 
     /**
+     * Creates a new OrderedDish setting its creation time to a moment provided
+     * by a Date object
+     *
+     * @param time
+     *            a Date object used to set this order's time
+     * @param name
+     *            the name of the new dish
+     * @param price
+     *            the price of the new dish
+     * @param filter
+     *            Must be zero if this dish represents a beverage or a positive
+     *            integer otherwise
+     */
+    public OrderedDish(final String name, final double price, final int filter, final Date time) {
+        super(name, price, filter);
+        this.time = time;
+    }
+
+    /**
      * @return the moment when this object was created
      */
     public Date getTime() {
